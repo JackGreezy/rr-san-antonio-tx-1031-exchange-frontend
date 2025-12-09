@@ -26,7 +26,7 @@ export default function Footer() {
               </a>
             </p>
             <p className="text-ink mb-2">
-              <a href={`mailto:${site.email}`} className="hover:underline">
+              <a href={`mailto:${site.email}`} className="hover:underline whitespace-nowrap">
                 {site.email}
               </a>
             </p>
