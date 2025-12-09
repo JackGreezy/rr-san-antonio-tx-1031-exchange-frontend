@@ -50,6 +50,9 @@ export default function ContactForm({ prefillProjectType }: ContactFormProps) {
     email: "",
     phone: "",
     projectType: "",
+    property: "",
+    estimatedCloseDate: "",
+    city: "",
     timeline: "",
     details: "",
   });

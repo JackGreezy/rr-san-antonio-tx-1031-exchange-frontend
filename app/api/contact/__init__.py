@@ -1,0 +1,1 @@
+# This file ensures the contact directory is a Python package
