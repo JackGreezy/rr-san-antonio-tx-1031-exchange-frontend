@@ -298,16 +298,76 @@ export default function ContactForm({ prefillProjectType }: ContactFormProps) {
         </div>
 
         <div>
+          <label htmlFor="city" className="block text-sm font-medium text-heading mb-2">
+            City
+          </label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            value={formData.city}
+            onChange={handleInputChange}
+            placeholder="Primary metro or submarket (optional)"
+            className="w-full px-4 py-2 bg-paper border border-outline rounded-lg text-ink focus:outline-none focus:border-primary"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="property" className="block text-sm font-medium text-heading mb-2">
+            Property Being Sold
+          </label>
+          <input
+            type="text"
+            id="property"
+            name="property"
+            value={formData.property}
+            onChange={handleInputChange}
+            placeholder="Include property type, location, and estimated value (optional)"
+            className="w-full px-4 py-2 bg-paper border border-outline rounded-lg text-ink focus:outline-none focus:border-primary"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="estimatedCloseDate" className="block text-sm font-medium text-heading mb-2">
+            Estimated Close Date
+          </label>
+          <input
+            type="date"
+            id="estimatedCloseDate"
+            name="estimatedCloseDate"
+            value={formData.estimatedCloseDate}
+            onChange={handleInputChange}
+            placeholder="Determines your 45 day and 180 day milestones (optional)"
+            className="w-full px-4 py-2 bg-paper border border-outline rounded-lg text-ink focus:outline-none focus:border-primary"
+          />
+        </div>
+
+        <div>
           <label htmlFor="details" className="block text-sm font-medium text-heading mb-2">
-            Details
+            Additional Details
           </label>
           <textarea
             id="details"
             name="details"
-            rows={6}
+            rows={4}
             value={formData.details}
             onChange={handleInputChange}
-            placeholder="Tell us about your 1031 exchange needs..."
+            placeholder="Outline goals, replacement preferences, or coordination needs (optional)"
+            className="w-full px-4 py-2 bg-paper border border-outline rounded-lg text-ink focus:outline-none focus:border-primary resize-none"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-heading mb-2">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows={3}
+            value={formData.message}
+            onChange={handleInputChange}
+            placeholder="Any additional message or questions (optional)"
             className="w-full px-4 py-2 bg-paper border border-outline rounded-lg text-ink focus:outline-none focus:border-primary resize-none"
           />
         </div>
