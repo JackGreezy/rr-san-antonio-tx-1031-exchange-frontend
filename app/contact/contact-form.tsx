@@ -368,7 +368,7 @@ export default function ContactForm({ prefillProjectType }: ContactFormProps) {
             rows={3}
             value={formData.message}
             onChange={handleInputChange}
-            placeholder="Any additional message or questions (optional)"
+            placeholder="Any additional message or questions (optional) - trigger new deployment"
             className="w-full px-4 py-2 bg-paper border border-outline rounded-lg text-ink focus:outline-none focus:border-primary resize-none"
           />
         </div>
