@@ -6,6 +6,6 @@ export function getBrand() {
     phone: site.phone,
     email: site.email,
     address: site.address,
-    website: process.env.NEXT_PUBLIC_SITE_URL || site.url,
+    website: process.env.NEXT_PUBLIC_SITE_URL || `https://www.1031exchangeofsanantonio.com`,
   }
 }
