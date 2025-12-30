@@ -61,8 +61,10 @@ export default function ContactForm({ prefillProjectType }: ContactFormProps) {
   const [captchaToken, setCaptchaToken] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [scriptReady, setScriptReady] = useState(false);
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [feedback, setFeedback] = useState("");
 
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY ?? "";
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY ?? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
   const searchProjectType = searchParams.get("projectType") ?? "";
   const scrollToFormParam = searchParams.get("scrollToForm") ?? "";
 
@@ -161,14 +163,63 @@ export default function ContactForm({ prefillProjectType }: ContactFormProps) {
     e.preventDefault();
 
     if (!captchaToken) {
+      setFeedback("Please complete the security verification.");
+      setStatus("error");
       return;
     }
 
     setIsSubmitting(true);
+    setStatus("submitting");
+    setFeedback("");
 
     try {
-      console.log("Form submitted", { ...formData, captchaToken });
-      // hook up to API or serverless function here
+      // Prepare phone number (digits only)
+      const phoneDigits = formData.phone.replace(/\D/g, '');
+
+      // Submit to API
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: phoneDigits,
+          projectType: formData.projectType,
+          city: formData.city,
+          property: formData.property,
+          estimatedCloseDate: formData.estimatedCloseDate,
+          company: formData.company,
+          timeline: formData.timeline,
+          details: formData.details,
+          'cf-turnstile-response': captchaToken,
+        }),
+      });
+
+      if (response.ok) {
+        setFormData({
+          name: "",
+          company: "",
+          email: "",
+          phone: "",
+          projectType: "",
+          city: "",
+          property: "",
+          estimatedCloseDate: "",
+          timeline: "",
+          details: "",
+        });
+        setProjectTypeQuery("");
+        setStatus("success");
+        setFeedback("Thank you. A San Antonio exchange specialist will follow up within one business day.");
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Failed to submit form' }));
+        setFeedback(errorData.error || 'Failed to submit form. Please try again.');
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setFeedback("An error occurred. Please try again or contact us directly.");
+      setStatus("error");
     } finally {
       setIsSubmitting(false);
       setCaptchaToken("");
@@ -368,6 +419,18 @@ export default function ContactForm({ prefillProjectType }: ContactFormProps) {
         >
           {isSubmitting ? "Sending..." : "Send Message"}
         </button>
+
+        {feedback && (
+          <p
+            role="status"
+            aria-live="polite"
+            className={`text-sm font-medium text-center ${
+              status === "success" ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {feedback}
+          </p>
+        )}
       </div>
     </form>
   );
